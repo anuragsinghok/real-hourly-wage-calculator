@@ -74,7 +74,7 @@ Every push to `main` deploys automatically with GitHub Actions (`.github/workflo
 
 Built in one afternoon. Plain HTML, CSS and JavaScript, no framework, free hosting.
 
-Built by Anurag ([@anurag_pov](https://x.com/anurag_pov)) in rural Japan 🇯🇵 · Day 1 of 97 of building in public.
+Built by Anurag ([Instagram](https://www.instagram.com/anurag_pov/) · [X](https://x.com/anurag_pov)) in rural Japan 🇯🇵 · Day 1 of 97 of building in public.
 
 ## License
 
