@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Real Hourly Wage Calculator</title>
+  <meta name="description" content="Find out what you really earn per hour after commute, overtime and work costs.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://anuragsinghok.github.io/real-hourly-wage-calculator/">
+
+  <!-- Open Graph / X (Twitter) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RealWage">
+  <meta property="og:title" content="What do you REALLY earn per hour?">
+  <meta property="og:description" content="Your salary lies. Count the commute, overtime and costs.">
+  <meta property="og:image" content="https://anuragsinghok.github.io/real-hourly-wage-calculator/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="What do you REALLY earn per hour? Real Hourly Wage Calculator">
+  <meta property="og:url" content="https://anuragsinghok.github.io/real-hourly-wage-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@anurag_pov">
+  <meta name="twitter:creator" content="@anurag_pov">
+  <meta name="twitter:title" content="What do you REALLY earn per hour?">
+  <meta name="twitter:description" content="Your salary lies. Count the commute, overtime and costs.">
+  <meta name="twitter:image" content="https://anuragsinghok.github.io/real-hourly-wage-calculator/og-image.png">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Optional analytics (free, no cookies). Create a site at https://www.goatcounter.com,
+       replace YOUR-CODE below, then uncomment:
+  <script data-goatcounter="https://YOUR-CODE.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  -->
+</head>
+<body>
+  <a class="skip-link" href="#calculator" data-i18n="skip">Skip to calculator</a>
+
+  <header class="site-header">
+    <div class="topbar">
+      <span class="brand" aria-hidden="true">
+        <img src="favicon.svg" alt="" width="24" height="24"> RealWage
+      </span>
+      <div class="lang-toggle" role="group" aria-label="Language / 言語">
+        <button type="button" class="seg" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="seg" data-lang="ja" aria-pressed="false" lang="ja">日本語</button>
+      </div>
+    </div>
+    <h1 data-i18n="title">What do you <span class="accent">REALLY</span> earn per hour?</h1>
+    <p class="subtitle" data-i18n="subtitle">Your salary lies. Count the commute, overtime and costs.</p>
+  </header>
+
+  <main id="calculator" class="layout">
+    <form id="wage-form" class="card form-card" novalidate autocomplete="off">
+      <div class="form-top">
+        <label for="currency" class="currency-label" data-i18n="currency">Currency</label>
+        <select id="currency" name="currency">
+          <option value="JPY">¥ JPY</option>
+          <option value="USD">$ USD</option>
+          <option value="INR">₹ INR</option>
+          <option value="EUR">€ EUR</option>
+          <option value="GBP">£ GBP</option>
+        </select>
+      </div>
+      <!-- Field sections are rendered by app.js from one schema (keeps EN/JA and the offer form in sync) -->
+      <div id="main-fields"></div>
+      <noscript><p class="notice">This calculator needs JavaScript to run. Nothing is sent anywhere; everything happens in your browser.</p></noscript>
+      <div class="form-actions">
+        <button type="button" id="reset-btn" class="btn btn-ghost" data-i18n="reset">Reset</button>
+        <button type="submit" class="btn btn-secondary" data-i18n="calculate">Calculate</button>
+      </div>
+    </form>
+
+    <div class="col-result">
+      <section id="result-card" class="card result-card" aria-labelledby="result-heading">
+        <h2 id="result-heading" class="visually-hidden" data-i18n="resultHeading">Your result</h2>
+
+        <div id="result-message" class="notice" role="status" hidden></div>
+
+        <div id="result-body">
+          <div class="row-think">
+            <span class="label" data-i18n="thinkLabel">You think you earn</span>
+            <span class="value-think"><span id="advertised">¥1,488</span> <span class="per" data-i18n="perHour">/ hour</span></span>
+          </div>
+          <div class="row-real">
+            <span class="label label-real" data-i18n-html="realLabel">You <strong>REALLY</strong> earn</span>
+            <span class="value-real"><span id="real">¥900</span> <span class="per" data-i18n="perHour">/ hour</span></span>
+          </div>
+          <p id="diff" class="diff">↓ 40% less than you think</p>
+
+          <ul class="facts">
+            <li id="fact-hours">You work 214.5 hours a month, but get paid for 178.</li>
+            <li id="fact-commute">You spend 10.5 full days a year just commuting.</li>
+            <li id="fact-costs">Work costs you ¥84,000 a year.</li>
+          </ul>
+
+          <div class="period-toggle" role="group" aria-label="Period">
+            <button type="button" class="seg" data-period="month" aria-pressed="true" data-i18n="monthly">Monthly</button>
+            <button type="button" class="seg" data-period="year" aria-pressed="false" data-i18n="yearly">Yearly</button>
+          </div>
+          <dl class="stats" id="stats"></dl>
+
+          <p id="result-warning" class="warning" hidden></p>
+        </div>
+
+        <div class="share-row">
+          <button type="button" id="share-x" class="btn btn-primary">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L2.8 2h6.4l4.4 5.9L18.9 2zm-1.1 18h1.7L7.9 3.9H6.1L17.8 20z"/></svg>
+            <span data-i18n="shareX">Share on X</span>
+          </button>
+          <button type="button" id="copy-btn" class="btn btn-secondary" data-i18n="copy">Copy result</button>
+          <button type="button" id="download-btn" class="btn btn-secondary" data-i18n="download">Download image</button>
+        </div>
+        <p id="copy-status" class="visually-hidden" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <!-- Compare with a job offer -->
+    <section class="card compare-card" aria-labelledby="compare-heading">
+      <div class="compare-head">
+        <h2 id="compare-heading" data-i18n="compareTitle">Compare with a job offer</h2>
+        <button type="button" id="compare-toggle" class="btn btn-secondary btn-sm" aria-expanded="false" aria-controls="compare-body" data-i18n="compareOpen">Compare</button>
+      </div>
+      <p class="muted" data-i18n="compareIntro">Got an offer with a higher salary but a longer commute? See which one really pays more per hour.</p>
+      <div id="compare-body" hidden>
+        <form id="offer-form" novalidate autocomplete="off">
+          <div class="compare-copy">
+            <button type="button" id="offer-copy" class="btn btn-ghost btn-sm" data-i18n="offerCopy">Copy my current numbers</button>
+          </div>
+          <div id="offer-fields"></div>
+        </form>
+        <div id="compare-result" class="compare-result" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="how card" aria-labelledby="how-heading">
+    <details id="how">
+      <summary><h2 id="how-heading" data-i18n="howTitle">How is this calculated?</h2></summary>
+      <div class="how-body">
+        <div data-i18n-html="howText"></div>
+        <h3 data-i18n="howYours">With your numbers</h3>
+        <table class="breakdown" id="breakdown"></table>
+      </div>
+    </details>
+  </section>
+
+  <footer class="site-footer">
+    <p class="privacy">🔒 <span data-i18n="privacy">Nothing is sent anywhere. All calculation happens in your browser.</span></p>
+    <p data-i18n="builtBy">Built by Anurag in rural Japan 🇯🇵 · Day 1 of building in public</p>
+    <p class="links">
+      <a id="x-link" href="https://x.com/anurag_pov" target="_blank" rel="noopener" data-i18n="followX">Follow on X</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/anuragsinghok/real-hourly-wage-calculator" target="_blank" rel="noopener" data-i18n="github">Code on GitHub</a>
+    </p>
+  </footer>
+
+  <!-- Mobile-only sticky bar with the real hourly wage -->
+  <a href="#result-card" id="sticky-bar" class="sticky-bar" aria-hidden="true" tabindex="-1">
+    <span class="sticky-label" data-i18n="stickyLabel">Your real hourly wage</span>
+    <span class="sticky-value"><span id="sticky-real">¥900</span><span class="per" data-i18n="perHourShort">/h</span> <span id="sticky-diff" class="sticky-diff">↓40%</span></span>
+  </a>
+
+  <script src="app.js"></script>
+</body>
+</html>
