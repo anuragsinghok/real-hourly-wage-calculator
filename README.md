@@ -4,7 +4,7 @@ A free calculator that shows what you *really* earn per hour after commute time,
 
 **Live:** https://anuragsinghok.github.io/real-hourly-wage-calculator/
 
-![What do you REALLY earn per hour?](og-image.png)
+![What do you REALLY earn per hour?](https://anuragsinghok.github.io/real-hourly-wage-calculator/og-image.png)
 
 Most people think they earn ¥1,500/hour. After commute, overtime and costs, it's often ¥900 to ¥1,000. That gap is the point.
 

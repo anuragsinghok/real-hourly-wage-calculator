@@ -24,6 +24,26 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check the math
         run: node test.js
+      - name: Build preview image
+        run: |
+          if [ -f og-image.png ]; then exit 0; fi
+          mkdir -p /tmp/og && cd /tmp/og
+          npm init -y > /dev/null
+          npm install playwright@1.56.1
+          npx playwright install --with-deps chromium
+          cat > shot.js <<'EOF'
+          const { chromium } = require('playwright');
+          (async () => {
+            const site = process.env.SITE;
+            const browser = await chromium.launch();
+            const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
+            await page.goto('file://' + site + '/og-image.html', { waitUntil: 'networkidle' });
+            await page.evaluate(() => document.fonts.ready);
+            await page.screenshot({ path: site + '/og-image.png' });
+            await browser.close();
+          })();
+          EOF
+          SITE="$GITHUB_WORKSPACE" node shot.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
